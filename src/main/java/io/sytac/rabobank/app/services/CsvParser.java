@@ -10,6 +10,7 @@ import io.sytac.rabobank.app.utils.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -17,7 +18,7 @@ import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 
 
-@Component
+@Service
 @Slf4j
 public class CsvParser {
 

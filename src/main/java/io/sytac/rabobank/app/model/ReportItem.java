@@ -13,9 +13,5 @@ public class ReportItem implements Serializable {
 
     private int transactionReference;
     private String Description;
-    private List<ValidationErrors> irregularities = new ArrayList<>();
-
-    public void addCause(ValidationErrors irregularity){
-        irregularities.add(irregularity);
-    }
+    private List<Irregularities> irregularities = new ArrayList<>();
 }

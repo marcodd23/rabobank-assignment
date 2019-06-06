@@ -23,7 +23,7 @@ public class Transaction implements Serializable {
     private Double endBalance;
     private boolean isNotValid = false;
     private List<Transaction> duplicatedTransactions = new ArrayList<>();
-    private List<ValidationErrors> irregularities = new ArrayList<>();
+    private List<Irregularities> irregularities = new ArrayList<>();
 
     public List<Transaction> getDuplicatedTransactions() {
         synchronized (this){
@@ -34,8 +34,8 @@ public class Transaction implements Serializable {
     public synchronized void addDuplicatedTransaction(Transaction transaction){
             duplicatedTransactions.add(transaction);
             isNotValid = true;
-            if(!irregularities.contains(ValidationErrors.DUPLICATED_REF_NUMB)){
-                addIrregularity(ValidationErrors.DUPLICATED_REF_NUMB);
+            if(!irregularities.contains(Irregularities.DUPLICATED_REF_NUMB)){
+                addIrregularity(Irregularities.DUPLICATED_REF_NUMB);
             }
     }
 
@@ -59,11 +59,11 @@ public class Transaction implements Serializable {
         return description;
     }
 
-    public List<ValidationErrors> getIrregularities() {
+    public List<Irregularities> getIrregularities() {
         return irregularities;
     }
 
-    public void addIrregularity (ValidationErrors irregularity){
+    public void addIrregularity (Irregularities irregularity){
         irregularities.add(irregularity);
     }
 }

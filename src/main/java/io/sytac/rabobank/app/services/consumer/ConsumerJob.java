@@ -2,7 +2,7 @@ package io.sytac.rabobank.app.services.consumer;
 
 import io.sytac.rabobank.app.ConsumerExitSyncronizer;
 import io.sytac.rabobank.app.model.Transaction;
-import io.sytac.rabobank.app.model.ValidationErrors;
+import io.sytac.rabobank.app.model.Irregularities;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -33,7 +33,7 @@ public class ConsumerJob{
                 Transaction transaction = blockingQueue.take();
                 validateRecords(transaction);
                 if(concurrentMap.containsKey(transaction.getTransactionReference())){
-                    transaction.addIrregularity(ValidationErrors.DUPLICATED_REF_NUMB);
+                    transaction.addIrregularity(Irregularities.DUPLICATED_REF_NUMB);
                     concurrentMap.get(transaction.getTransactionReference()).addDuplicatedTransaction(transaction);
                 }else {
                     concurrentMap.put(transaction.getTransactionReference(), transaction);
@@ -50,13 +50,13 @@ public class ConsumerJob{
 
     }
 
-    private void validateRecords(Transaction transaction){
+    public static void validateRecords(Transaction transaction){
         BigDecimal startBalance = new BigDecimal(transaction.getStartBalance()).setScale(2, RoundingMode.HALF_UP);
         BigDecimal endBalance = new BigDecimal(transaction.getEndBalance()).setScale(2, RoundingMode.HALF_UP);
         BigDecimal mutation = new BigDecimal(transaction.getMutation()).setScale(2, RoundingMode.HALF_UP);
         if(startBalance.add(mutation).compareTo(endBalance) != 0){
             transaction.setNotValid(true);
-            transaction.addIrregularity(ValidationErrors.BALANCE_NOT_VALID);
+            transaction.addIrregularity(Irregularities.BALANCE_NOT_VALID);
         }
     }
 }

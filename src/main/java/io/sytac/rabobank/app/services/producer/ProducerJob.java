@@ -33,12 +33,6 @@ public class ProducerJob {
                 xmlParser.parseDocument(filename);
             }
         }
-/*        String[] filenameSplitted = StringUtils.split(filename, ".");
-        String extension = "";
-        if(filenameSplitted.length == 2){
-            extension = filenameSplitted
-        }*/
-        //csvParser.parseDocument(filename);
         consumerExitSyncronizer.setNotifyConsumersShutdown(true);
     }
 }

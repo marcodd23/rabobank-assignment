@@ -38,18 +38,9 @@ public class BatchApplicationConfig {
 
     }
 
-/*    @Bean(name = "concurrentMap")
-    public Map<Integer, List<Transaction>> getConcurrentMap(){
-        return new ConcurrentHashMap<>();
-    }*/
-
     @Bean(name = "concurrentMap")
     public Map<Integer, Transaction> getConcurrentMap(){
         return new ConcurrentHashMap<>();
     }
 
-/*    @Bean(name = "producerConsumerQueue")
-    public ProducerConsumerQueue getProducerConsumerQueue(){
-        return new ProducerConsumerQueue(100);
-    }*/
 }
