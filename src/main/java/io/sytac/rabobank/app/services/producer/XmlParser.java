@@ -1,4 +1,4 @@
-package io.sytac.rabobank.app.services;
+package io.sytac.rabobank.app.services.producer;
 
 import io.sytac.rabobank.app.model.Transaction;
 import io.sytac.rabobank.app.utils.FileUtil;
@@ -18,8 +18,13 @@ import java.util.concurrent.BlockingQueue;
 @Slf4j
 public class XmlParser {
 
-    @Autowired
+
     private BlockingQueue<Transaction> blockingQueue;
+
+    @Autowired
+    public XmlParser(BlockingQueue<Transaction> blockingQueue) {
+        this.blockingQueue = blockingQueue;
+    }
 
     public void parseDocument(String fileName) {
         try {

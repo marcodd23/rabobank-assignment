@@ -1,4 +1,4 @@
-package io.sytac.rabobank.app.services;
+package io.sytac.rabobank.app.services.producer;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;

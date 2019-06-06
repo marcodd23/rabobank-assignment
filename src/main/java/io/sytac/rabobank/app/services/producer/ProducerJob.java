@@ -1,8 +1,6 @@
 package io.sytac.rabobank.app.services.producer;
 
 import io.sytac.rabobank.app.ConsumerExitSyncronizer;
-import io.sytac.rabobank.app.services.CsvParser;
-import io.sytac.rabobank.app.services.XmlParser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

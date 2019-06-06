@@ -1,8 +1,16 @@
 # rabobank-assignment
-Rabobank programming assignment
+The application is a Batch processor that use the PRODUCER - CONSUMER pattern.
+The Producer works in the main thread, and process the file record by record and insert the element in a BlockingQueue.
+The consumer works by default on 2 thread (but the number is configurable with the consumer.treads paramenter). Each thread process a transaction records
+and put it in a concurrent hash map
+When the file has been finished to read, the main thread process the hashMap to check the duplicates 
 
+####To run with Maven:
 mvn spring-boot:run -Dspring-boot.run.arguments=--consumer.treads=3,--input.file=records.xml
 
-java -jar app-0.0.1-SNAPSHOT.jar --consumer.treads=5
+#
+
+####To run with Java:
+java -jar app-0.0.1-SNAPSHOT.jar --consumer.treads=5 --input.file=records.xml
 
 

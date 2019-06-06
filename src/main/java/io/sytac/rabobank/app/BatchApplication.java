@@ -1,9 +1,11 @@
 package io.sytac.rabobank.app;
 
+import io.sytac.rabobank.app.model.ReportItem;
 import io.sytac.rabobank.app.services.ReportGenerator;
 import io.sytac.rabobank.app.services.consumer.ConsumerJob;
 import io.sytac.rabobank.app.services.producer.ProducerJob;
 import io.sytac.rabobank.app.model.Transaction;
+import io.sytac.rabobank.app.utils.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.List;
 import java.util.Map;
 
 @SpringBootApplication
@@ -39,12 +42,14 @@ public class BatchApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 		for (int i = 0; i < consumerThreadsNumber; i++) {
-			consumerJob.processRecord();
+			consumerJob.runConsumer();
 		}
 
 		producerJob.produce(inputFile);
 
-		reportGenerator.generateReport();
+		List<ReportItem> batchReport = reportGenerator.generateReport();
+
+		FileUtil.writeReportToJsonFile(batchReport);
 
 		System.exit(0);
 	}

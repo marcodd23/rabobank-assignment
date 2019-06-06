@@ -16,47 +16,26 @@ import java.util.concurrent.BlockingQueue;
 @Service
 @Slf4j
 public class ConsumerJob{
+
     @Autowired
     private ConsumerExitSyncronizer consumerExitSyncronizer;
     @Autowired
-    private BlockingQueue<Transaction> blockingQueue;
-
-    @Autowired
-    private Map<Integer, Transaction> concurrentMap;
-
+    private RecordProcessor recordProcessor;
 
     @Async
-    public void processRecord() {
+    public void runConsumer() {
         while (!consumerExitSyncronizer.getNotifyConsumersShutdown()){
             log.info("#### running" + Thread.currentThread().getName());
             try {
-                Transaction transaction = blockingQueue.take();
-                validateRecords(transaction);
-                if(concurrentMap.containsKey(transaction.getTransactionReference())){
-                    transaction.addIrregularity(Irregularities.DUPLICATED_REF_NUMB);
-                    concurrentMap.get(transaction.getTransactionReference()).addDuplicatedTransaction(transaction);
-                }else {
-                    concurrentMap.put(transaction.getTransactionReference(), transaction);
-                }
-            } catch (InterruptedException ex){
+                recordProcessor.processRecord();
+            }catch (InterruptedException ex){
                 if(!consumerExitSyncronizer.getNotifyConsumersShutdown()){
                     ex.printStackTrace();
                 }
             }
-
         }
 
         log.info("@@@@@ Terminated: " + Thread.currentThread().getName());
 
-    }
-
-    public static void validateRecords(Transaction transaction){
-        BigDecimal startBalance = new BigDecimal(transaction.getStartBalance()).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal endBalance = new BigDecimal(transaction.getEndBalance()).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal mutation = new BigDecimal(transaction.getMutation()).setScale(2, RoundingMode.HALF_UP);
-        if(startBalance.add(mutation).compareTo(endBalance) != 0){
-            transaction.setNotValid(true);
-            transaction.addIrregularity(Irregularities.BALANCE_NOT_VALID);
-        }
     }
 }

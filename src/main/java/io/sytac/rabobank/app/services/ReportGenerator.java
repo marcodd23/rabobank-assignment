@@ -1,16 +1,11 @@
 package io.sytac.rabobank.app.services;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import io.sytac.rabobank.app.model.ReportItem;
 import io.sytac.rabobank.app.model.Transaction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,10 +14,14 @@ import java.util.Map;
 @Slf4j
 public class ReportGenerator {
 
-    @Autowired
     private Map<Integer, Transaction> concurrentMap;
 
-    public void generateReport() {
+    @Autowired
+    public ReportGenerator(Map<Integer, Transaction> concurrentMap) {
+        this.concurrentMap = concurrentMap;
+    }
+
+    public List<ReportItem> generateReport() {
         List<ReportItem> report = new ArrayList<>();
         concurrentMap.entrySet().stream()
                 .filter(transactionEntry -> transactionEntry.getValue().isNotValid())
@@ -36,20 +35,7 @@ public class ReportGenerator {
                     }
                 });
 
-        writeReportToJsonFile(report);
-    }
-
-    private void writeReportToJsonFile(List<ReportItem> report) {
-        try {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            FileWriter fileWriter = new FileWriter(new File("jsonReport.json"));
-            gson.toJson(report, fileWriter);
-            fileWriter.flush();
-            fileWriter.close();
-        } catch (IOException e) {
-            log.error("#### - Error priting report!!");
-            e.printStackTrace();
-        }
+        return report;
     }
 
 
