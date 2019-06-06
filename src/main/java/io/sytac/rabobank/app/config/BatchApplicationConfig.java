@@ -1,6 +1,7 @@
 package io.sytac.rabobank.app.config;
 
 import io.sytac.rabobank.app.model.Transaction;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
@@ -14,11 +15,13 @@ import java.util.concurrent.*;
 @EnableAsync
 public class BatchApplicationConfig {
 
+    @Value("${threadpool.max.size}")
+    private int threadPoolMaxSize;
 
     @Bean
     public TaskExecutor threadPoolTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(2);
+        executor.setCorePoolSize(threadPoolMaxSize);
         executor.setThreadNamePrefix("consumer-Tread");
         executor.initialize();
         return executor;

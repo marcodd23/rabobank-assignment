@@ -34,35 +34,14 @@ public class ReportGenerator {
                     }
                 });
 
-/*        List<ReportItem> report = new ArrayList<>();
-        concurrentMap.entrySet().stream()
-                .filter(transactionEntry -> transactionEntry.getValue().isNotValid())
-                .forEach(transactionEntry -> {
-                    Transaction transaction = transactionEntry.getValue();
-                    if(transaction.isDuplicated()){
-                        report.add(mapTransactionToReportItem(transaction, true));
-                        transaction.getDuplicatedTransactions().forEach(duplicatedTransaction -> {
-                            report.add(mapTransactionToReportItem(duplicatedTransaction, true));
-                        });
-                    }else {
-                        report.add(mapTransactionToReportItem(transaction, false));
-                    }
-                });*/
-
-
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-
-        //String filePath = FileUtil.createFileUseJavaNewIO("jsonReport.json");
 
         FileWriter fileWriter = new FileWriter(new File("jsonReport2.json"));
 
-        /*String jsonReport = */gson.toJson(report, fileWriter);
+        gson.toJson(report, fileWriter);
 
         fileWriter.flush();
         fileWriter.close();
-
-        //System.out.println(jsonReport);
     }
 
 

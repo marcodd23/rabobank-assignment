@@ -1,4 +1,4 @@
-package io.sytac.rabobank.app.services.producer;
+package io.sytac.rabobank.app.services;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -22,15 +22,15 @@ import java.util.concurrent.BlockingQueue;
 public class CsvParser {
 
     private CSVReader csvReader;
-    private CSVReaderBuilder csvReaderBuilder;
+/*    private CSVReaderBuilder csvReaderBuilder;
     private String fileName;
-    private final String basePath = "input/";
+    private final String basePath = "input/";*/
 
     @Autowired
     private BlockingQueue<Transaction> blockingQueue;
 
     private CsvToBean configure(String fileName){
-        this.fileName = fileName;
+        /*this.fileName = fileName;*/
 
         Reader reader = FileUtil.getReader(fileName);
         if (reader != null) {
@@ -43,7 +43,7 @@ public class CsvParser {
                 new ColumnPositionMappingStrategy();
 
         mappingStrategy.setType(Transaction.class);
-        //Fields in Employee Bean
+        //Fields in Transaction Bean
         String[] columns = new String[]{"transactionReference","iban","description","startBalance", "mutation", "endBalance"};
         //Setting the colums for mappingStrategy
         mappingStrategy.setColumnMapping(columns);
