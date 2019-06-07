@@ -12,8 +12,11 @@ The batch will generate a report.json file in the same directory where the jar f
 ## To run with Java:
 - java -jar app-0.0.1-SNAPSHOT.jar --consumer.treads=5 --input.file=records.xml
 
-Where: 
---consumer.treads: Number of threads to use for the consumer
---input.file: the file to be processed (csv or xml)
+
+# Paramenters: 
+
+- consumer.treads: Number of threads to use for the consumer
+
+- input.file: the file to be processed (csv or xml)
 
 
