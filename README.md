@@ -18,6 +18,4 @@ The batch will generate a report.json file in the same directory where the jar f
 
 - consumer.treads: Number of threads to use for the consumer
 
-- input.file: the file to be processed (csv or xml)
-
 
