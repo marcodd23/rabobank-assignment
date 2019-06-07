@@ -13,8 +13,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
 @SpringBootApplication
@@ -23,8 +23,9 @@ public class BatchApplication implements CommandLineRunner {
 
     @Value("${consumer.treads}")
     private int consumerThreadsNumber;
-    @Value("${input.file}")
-    private String inputFile;
+
+    @Value("${input.files}")
+    private List<String> inputFiles;
 
     @Autowired
     private ConsumerJob consumerJob;
@@ -46,7 +47,7 @@ public class BatchApplication implements CommandLineRunner {
             consumerJob.runConsumer();
         }
 
-        producerJob.produce(inputFile);
+        producerJob.produce(inputFiles);
 
         while (!blockingQueue.isEmpty()) {
             Thread.sleep(100);

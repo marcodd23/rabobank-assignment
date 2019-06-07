@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,15 +23,21 @@ public class ProducerJob {
     private static final String CSV_EXTENSION = "csv";
     private static final String XML_EXTENSION = "xml";
 
-    public void produce(String filename){
-        String extension = Optional.ofNullable(StringUtils.split(filename, ".")).map(strings -> strings[1]).orElse(null);
-        if(StringUtils.isNotBlank(extension)){
-            if(extension.equals(CSV_EXTENSION)){
-                csvParser.parseDocument(filename);
-            }else if(extension.equals(XML_EXTENSION)){
-                xmlParser.parseDocument(filename);
+    public void produce(List<String> fileList){
+        if(!fileList.isEmpty()){
+            for (String fileName : fileList) {
+                log.info("##### Producer parsing file: " + fileName);
+                String extension = Optional.ofNullable(StringUtils.split(fileName, ".")).map(strings -> strings[1]).orElse(null);
+                if(StringUtils.isNotBlank(extension)){
+                    if(extension.equals(CSV_EXTENSION)){
+                        csvParser.parseDocument(fileName);
+                    }else if(extension.equals(XML_EXTENSION)){
+                        xmlParser.parseDocument(fileName);
+                    }
+                }
             }
+            consumerExitSyncronizer.setNotifyConsumersShutdown(true);
         }
-        consumerExitSyncronizer.setNotifyConsumersShutdown(true);
+
     }
 }
