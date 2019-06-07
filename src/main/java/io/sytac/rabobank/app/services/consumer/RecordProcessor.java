@@ -24,6 +24,11 @@ public class RecordProcessor {
         this.concurrentMap = concurrentMap;
     }
 
+    /**
+     * It will validate the records. Then if the @concurrentMap has already a key == transactionReference,
+     * it will set the transaction has duplicated adding an irregularity to a the list of Irregularites
+     * @throws InterruptedException
+     */
     public void processRecord() throws InterruptedException{
             Transaction transaction = blockingQueue.take();
             validateRecords(transaction);

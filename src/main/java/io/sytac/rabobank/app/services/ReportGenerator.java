@@ -21,6 +21,13 @@ public class ReportGenerator {
         this.concurrentMap = concurrentMap;
     }
 
+    /**
+     * This method will iterate the cuncurrentMap, will filter the invalid, and then it will map the invalid
+     * transaction to a @{@link ReportItem} and add it to a List. If the Transaction Ref Number is duplicated,
+     * it will map all the duplicated transactions to the List of @{@link ReportItem}
+     *
+     * @return
+     */
     public List<ReportItem> generateReport() {
         List<ReportItem> report = new ArrayList<>();
         concurrentMap.entrySet().stream()

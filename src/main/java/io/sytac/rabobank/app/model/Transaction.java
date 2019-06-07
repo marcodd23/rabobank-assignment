@@ -21,7 +21,7 @@ public class Transaction implements Serializable {
     private Double startBalance;
     private Double mutation;
     private Double endBalance;
-    private boolean isNotValid = false;
+    private volatile boolean isNotValid = false;
     private List<Transaction> duplicatedTransactions = new ArrayList<>();
     private List<Irregularities> irregularities = new ArrayList<>();
 
