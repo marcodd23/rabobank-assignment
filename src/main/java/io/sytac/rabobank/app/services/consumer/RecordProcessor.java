@@ -1,11 +1,9 @@
 package io.sytac.rabobank.app.services.consumer;
 
-import io.sytac.rabobank.app.ConsumerExitSyncronizer;
 import io.sytac.rabobank.app.model.Irregularities;
 import io.sytac.rabobank.app.model.Transaction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

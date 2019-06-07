@@ -23,16 +23,11 @@ import java.util.concurrent.BlockingQueue;
 public class CsvParser {
 
     private CSVReader csvReader;
-/*    private CSVReaderBuilder csvReaderBuilder;
-    private String fileName;
-    private final String basePath = "input/";*/
 
     @Autowired
     private BlockingQueue<Transaction> blockingQueue;
 
     private CsvToBean configure(String fileName){
-        /*this.fileName = fileName;*/
-
         Reader reader = FileUtil.getReader(fileName);
         if (reader != null) {
             csvReader = new CSVReaderBuilder(reader)
