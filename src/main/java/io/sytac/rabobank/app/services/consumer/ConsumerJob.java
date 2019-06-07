@@ -15,27 +15,36 @@ import java.util.concurrent.BlockingQueue;
 
 @Service
 @Slf4j
-public class ConsumerJob{
+public class ConsumerJob {
 
     @Autowired
     private ConsumerExitSyncronizer consumerExitSyncronizer;
     @Autowired
     private RecordProcessor recordProcessor;
+    @Autowired
+    private BlockingQueue<Transaction> blockingQueue;
 
     @Async
     public void runConsumer() {
-        while (!consumerExitSyncronizer.getNotifyConsumersShutdown()){
+        while (!consumerExitSyncronizer.getNotifyConsumersShutdown()) {
             log.info("#### running" + Thread.currentThread().getName());
-            try {
-                recordProcessor.processRecord();
-            }catch (InterruptedException ex){
-                if(!consumerExitSyncronizer.getNotifyConsumersShutdown()){
-                    ex.printStackTrace();
-                }
-            }
+            processRecord();
+        }
+        while (!blockingQueue.isEmpty()) {
+            processRecord();
         }
 
         log.info("@@@@@ Terminated: " + Thread.currentThread().getName());
 
+    }
+
+    private void processRecord() {
+        try {
+            recordProcessor.processRecord();
+        } catch (InterruptedException ex) {
+            if (!consumerExitSyncronizer.getNotifyConsumersShutdown()) {
+                ex.printStackTrace();
+            }
+        }
     }
 }

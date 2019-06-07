@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ConsumerExitSyncronizer {
-    private Boolean notifyConsumersShutdown = false;
+    private volatile Boolean notifyConsumersShutdown = false;
 
     public synchronized Boolean getNotifyConsumersShutdown() {
         return notifyConsumersShutdown;

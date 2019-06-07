@@ -15,42 +15,47 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 
 @SpringBootApplication
 @Slf4j
 public class BatchApplication implements CommandLineRunner {
 
-	@Value("${consumer.treads}")
-	private int consumerThreadsNumber;
-	@Value("${input.file}")
-	private String inputFile;
+    @Value("${consumer.treads}")
+    private int consumerThreadsNumber;
+    @Value("${input.file}")
+    private String inputFile;
 
-	@Autowired
-	private ConsumerJob consumerJob;
-	@Autowired
-	private ProducerJob producerJob;
-	@Autowired
-	private Map<Integer,Transaction> concurrentMap;
-	@Autowired
-	private ReportGenerator reportGenerator;
+    @Autowired
+    private ConsumerJob consumerJob;
+    @Autowired
+    private ProducerJob producerJob;
+    @Autowired
+    private BlockingQueue<Transaction> blockingQueue;
+    @Autowired
+    private ReportGenerator reportGenerator;
 
-	public static void main(String[] args) {
-		SpringApplication.run(BatchApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(BatchApplication.class, args);
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
+    @Override
+    public void run(String... args) throws Exception {
 
-		for (int i = 0; i < consumerThreadsNumber; i++) {
-			consumerJob.runConsumer();
-		}
+        for (int i = 0; i < consumerThreadsNumber; i++) {
+            consumerJob.runConsumer();
+        }
 
-		producerJob.produce(inputFile);
+        producerJob.produce(inputFile);
 
-		List<ReportItem> batchReport = reportGenerator.generateReport();
+        while (!blockingQueue.isEmpty()) {
+            Thread.sleep(100);
+        }
 
-		FileUtil.writeReportToJsonFile(batchReport);
+        List<ReportItem> batchReport = reportGenerator.generateReport();
 
-		System.exit(0);
-	}
+        FileUtil.writeReportToJsonFile(batchReport);
+
+        System.exit(0);
+    }
 }

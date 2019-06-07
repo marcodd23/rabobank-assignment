@@ -41,7 +41,6 @@ public class RecordProcessorTest {
         recordProcessor.processRecord();
         Assertions.assertThat(concurrentMap.containsKey(156108));
         Assertions.assertThat(concurrentMap.get(156108).isNotValid()).isFalse();
-        System.out.println("sdfgdfg");
     }
 
     @Test
@@ -66,7 +65,6 @@ public class RecordProcessorTest {
         Assertions.assertThat(concurrentMap.containsKey(156108));
         Assertions.assertThat(concurrentMap.get(156108).isNotValid()).isTrue();
         Assertions.assertThat(concurrentMap.get(156108).getIrregularities().contains(Irregularities.BALANCE_NOT_VALID));
-        System.out.println("sdfgdfg");
     }
 
     @Test
@@ -107,7 +105,6 @@ public class RecordProcessorTest {
         Assertions.assertThat(concurrentMap.get(112806).getDuplicatedTransactions()).hasSize(1);
         Assertions.assertThat(concurrentMap.get(112806).getDuplicatedTransactions().get(0).isNotValid());
         Assertions.assertThat(concurrentMap.get(112806).getDuplicatedTransactions().get(0).getIrregularities().contains(Irregularities.DUPLICATED_REF_NUMB));
-        System.out.println("sdfgdfg");
     }
 
     @Test
@@ -147,7 +144,6 @@ public class RecordProcessorTest {
         Assertions.assertThat(concurrentMap.get(112806).getDuplicatedTransactions()).hasSize(1);
         Assertions.assertThat(concurrentMap.get(112806).getDuplicatedTransactions().get(0).isNotValid());
         Assertions.assertThat(concurrentMap.get(112806).getDuplicatedTransactions().get(0).getIrregularities().containsAll(Arrays.asList(Irregularities.DUPLICATED_REF_NUMB, Irregularities.BALANCE_NOT_VALID)));
-        System.out.println("sdfgdfg");
     }
 
 }

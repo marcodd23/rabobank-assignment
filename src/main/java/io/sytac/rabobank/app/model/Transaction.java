@@ -25,10 +25,8 @@ public class Transaction implements Serializable {
     private List<Transaction> duplicatedTransactions = new ArrayList<>();
     private List<Irregularities> irregularities = new ArrayList<>();
 
-    public List<Transaction> getDuplicatedTransactions() {
-        synchronized (this){
+    public synchronized List<Transaction> getDuplicatedTransactions() {
             return duplicatedTransactions;
-        }
     }
 
     public synchronized void addDuplicatedTransaction(Transaction transaction){
