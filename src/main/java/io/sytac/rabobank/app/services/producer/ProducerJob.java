@@ -36,8 +36,7 @@ public class ProducerJob {
                     }
                 }
             }
-            consumerExitSyncronizer.setNotifyConsumersShutdown(true);
         }
-
+        consumerExitSyncronizer.setNotifyConsumersShutdown(true);
     }
 }
